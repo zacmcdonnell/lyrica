@@ -14,7 +14,7 @@ restrictionList = [[0, 1, 2, 3], [12, 13, 14, 15],
 amountMovedList = [-3, 3, 1, -1]
 
 weatherOptions = ['sunny', 'rainy', 'fine', 'windy', 'bushfires',
-                  'tsunami', 'snow storm', 'icey winds', 'partly cloudy', 'thunderstorms','lighting']
+                  'tsunami', 'snow storm', 'icey winds', 'partly cloudy', 'thunderstorms', 'lighting']
 
 itemKeywords = []
 
@@ -27,6 +27,8 @@ moveKeywords = {
 moveCommands = ["go", "travel", "journey", "walk", "run"]
 collectCommands = ["pickup", "take", "grab", "collect"]
 dropCommands = ['drop', 'leave']
+
+joiningWords = ['and', 'on', 'the']
 
 verbs = []
 verbs.extend(moveCommands)

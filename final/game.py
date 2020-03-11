@@ -229,7 +229,7 @@ class Game:
                 verb = i if verb == None else print('extra verbs are ignored')
             else:
                 # if a word is entered that the program doesn't understand
-                print('I dont understand that word..')
+                print("I'm not sure what you mean by", i)
                 return False
         # checks that the user entered a verb and a noun
         if noun == None or verb == None:
@@ -249,9 +249,6 @@ class Game:
                     self.gamePlaying = False
             # check what the verbs and nouns were and call appropraite functions
             elif self.handleInput():
-                # set the stamina
-                player1.setStamina()
-
                 # check if the user wanted to move
                 if verb in moveCommands and self.goWhere(noun):
                     player1.movePlayer()
