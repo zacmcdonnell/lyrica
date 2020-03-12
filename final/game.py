@@ -217,16 +217,22 @@ class Game:
         # ask for user input and split the response into indiviuals strings and store in array
         userInput = input("Enter your next action: ").lower().split()
         os.system('cls')
+        #print('UserInput =', userInput)
 
         # loop through the userInput array
         for i in userInput:
+            #print('current word:', i)
             # check if the item is a verb or noun
             if self.goWhere(i) or i in itemKeywords:
                 # only use the first noun and verb else extra nouns or verbs are ignored
                 noun = i if noun == None else print('extra nouns are ignored')
+                #print('noun = ', noun)
 
             elif i in verbs:
                 verb = i if verb == None else print('extra verbs are ignored')
+                #print('verb = ', verb)
+            elif i in joiningWords:
+                None
             else:
                 # if a word is entered that the program doesn't understand
                 print("I'm not sure what you mean by", i)
