@@ -87,6 +87,7 @@ class Game:
                 print("OAK: HEY WAIT, DON'T GO OUT ")
                 print('Whew, That was close!')
                 print('Wild pokemon live in tall grass')
+                print('yeet')
 
 
                 # program entry point
