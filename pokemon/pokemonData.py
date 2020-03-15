@@ -1,5 +1,3 @@
-
-
 quests = ['Find professor OAK', 'fill this in zac u idoit']
 
 '''
@@ -32,20 +30,24 @@ class player:
 
 
 class mapLocation:
-    def __init__(self, name, available, blockedMessage):
+    def __init__(self, name, available):
         self.name = name
         self.available = available
-        self.blockedMessage = blockedMessage
 
 
-bedroom = mapLocation('Bedroom', True, None)
-livingRoom = mapLocation('Living room', True, None)
+bedroom = mapLocation('bedroom', True)
+livingRoom = mapLocation('living room', True)
 house = [bedroom, livingRoom]
 
-profsLab = mapLocation('Oak Pokemon Research Lab', True, None)
-consinsHouse = mapLocation("Cousins' House", True, None)
-yourHouse = mapLocation('Your House', True, None)
-mysteriousPath = mapLocation('Mysterious Path', True, None)
+
+player1 = player()
+
+
+profsLab = mapLocation('oak pokemon research lab', False)
+
+consinsHouse = mapLocation("cousins' house", True)
+yourHouse = mapLocation('your house', True)
+mysteriousPath = mapLocation('mysterious path', True)
 paletTown = [profsLab, consinsHouse, yourHouse, mysteriousPath]
 
 
@@ -68,6 +70,7 @@ class pokemon:
         print('HEALTH:', self.health)
 
 
+'''
 class item:
     # define attributes for the item class
     def __init__(self, name, location, inBackpack):
@@ -109,3 +112,4 @@ class item:
     def keywords(self):
         # when an item object is created the function attaches the name to a list for later use
         return itemKeywords.append(self.name)
+'''

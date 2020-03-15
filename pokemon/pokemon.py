@@ -17,7 +17,6 @@ class Game:
         self.gameMessage = 'You jump out of bed and rush into the living room'
 
     def start(self):
-        global player1
         # intialise the game and display welcome screen
         os.system('cls')
         print("-----------------WELCOME TO POKEMON----------------- \n")
@@ -26,7 +25,6 @@ class Game:
             'PROFFESSOR OAK: Hello there! Welcome to the world of POKEMON! My name is OAK! People call me the POKEMON PROF!')
         print('This world is inhabited by creatures called POKEMON! For some',
               'people, POKEMON are pets. Others use them for fights. Myself... I study POKEMON as a profession.')
-        player1 = player()
         player1.name = input('But first, whats your name? ')
         print('Right! So your name is', player1.name + '!')
         print(
@@ -36,7 +34,7 @@ class Game:
         print("That's right! I remember now! His name is " + cousin.name + '!')
         print("Your very own POKEMON legend is about to unfold! A world of dreams and adventures with POKEMON awaits! Let's go!")
         self.hint = "to leave the bedroom, type 'go south'"
-        self.whereTo()
+        self.verb = 'Go to:'
 
         # create the player object
 
@@ -56,34 +54,42 @@ class Game:
 
     def MainGame(self):
         while True:
+            for i in player1.area:
+                if i.name != player1.location.name and i.name not in self.possibleActions:
+                    self.possibleActions.append(i.name)
             self.getInput()
-            if player1.location == bedroom:
-                if userInput == 'living room':
-                    print(self.gameMessage)
-                    player1.location = livingRoom
-                else:
-                    print("That action wasn't vaild")
+
+            for i in player1.area:
+                if i.name in userInput and i.name in self.possibleActions:
+                    player1.location = i
+                    self.possibleActions = []
 
             if player1.location == livingRoom:
+                print('You run into the living room')
+
                 print('\nMUM: Right. All boys leave home one day ')
                 print('Tt said so on TV.')
                 print('PROF OAK, next door is looking for you.')
+
+                print(
+                    '\nYou walk outside and your eyes are blinded by the bright sunlight ')
                 player1.area = paletTown
+                print('\nPALET TOWN: SHADES OF YOUR JOURNEY AWAIT')
 
-                self.whereTo()
-                if userInput == 'mysterious path':
-                    print("PROF: WAIT UP MY DUDEEE")
+            if player1.location == profsLab:
+                if profsLab.available:
+                    print('yeet')
                 else:
-                    print("That action wasn't vaild")
+                    print('BLUE: Yo' + player1.name + "Gramps isn't around?" +
+                          "\nI ran here cos' he said he had a pokemon for me.")
 
-    def whereTo(self, area):
-        self.verb = 'Go to:'
-        for i in player1.area:
-            if i.available and i != player1.location:
-                self.possibleActions.append(i.name)
+            if player1.location == mysteriousPath:
+                print("OAK: HEY WAIT, DON'T GO OUT ")
+                print('Whew, That was close!')
+                print('Wild pokemon live in tall grass')
 
 
-        # program entry point
+                # program entry point
 if __name__ == '__main__':
     # assign the game class to the master variable
     master = Game()
