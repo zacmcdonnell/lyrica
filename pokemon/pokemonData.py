@@ -1,3 +1,4 @@
+import os
 quests = ['Find professor OAK', 'fill this in zac u idoit']
 
 '''
@@ -6,6 +7,30 @@ class area:
         self.locations = locations
 '''
 
+tutorial = ['Hello there! Welcome to the world of POKEMON!',
+            'This world is inhabited by creatures called POKEMON!',
+            'My name is OAK! People call me the POKEMON PROF!',
+            'For some people, POKEMON are pets',
+            'Others use them for fights.',
+            'Myself...',
+            'I study POKEMON as a profession.',
+            'But first, whats your name? ',
+            'This is my grandson.',
+            "He's been your rival since you were a baby.",
+            '...Erm, what is his name again? ',
+            "Your very own POKEMON legend is about to unfold!",
+            'A world of dreams and adventures with POKEMON awaits!',
+            "Let's go!"
+            ]
+
+livingRoomDialog = ['Right. All boys leave home one day',
+                    'It said so on TV.',
+                    'PROF OAK, next door is looking for you.']
+
+mysteriousPathDialog = ["OAK: HEY WAIT, DON'T GO OUT ",
+                        'Whew, That was close!',
+                        'Wild pokemon live in tall grass']
+
 
 class player:
     # create the class atributes of the player class
@@ -13,7 +38,7 @@ class player:
         self.name = 'Red'
         self.health = 3
         self.stamina = 10
-        self.location = bedroom
+        self.location = 'bedroom'
         self.area = house
         self.completedQuests = 0
         self.currentQuest = quests[self.completedQuests]
@@ -29,26 +54,59 @@ class player:
             self.currentQuest = quests[self.completedQuests]
 
 
-class mapLocation:
-    def __init__(self, name, available):
-        self.name = name
-        self.available = available
+def bedroom():
+    print('yeet')
 
 
-bedroom = mapLocation('bedroom', True)
-livingRoom = mapLocation('living room', True)
-house = [bedroom, livingRoom]
+def livingRoom():
+    for i in range(len(livingRoomDialog)):
+        print('----------', player1.location, '----------',)
+        print('MUM:', livingRoomDialog[i])
+        input()
+        os.system('cls')
+
+    print('YOU WALK OUTSIDE AND YOU EYES ARE BLINDED BY SUNLIGHT')
+    input()
+    print('----------PALET TOWN----------',)
+    player1.area = paletTown
+    print('SHADES OF YOUR JOURNEY AWAIT')
 
 
-player1 = player()
+def profsLab():
+    print('BLUE: Yo ' + player1.name + " Gramps isn't around?" +
+          "\nI ran here cos' he said he had a pokemon for me.")
 
 
-profsLab = mapLocation('oak pokemon research lab', False)
+def cosinsHouse():
+    print('----------', player1.location, '----------',)
+    print("BLUES SISTER: Hi", player1.name + "! BLUE is out at Grandpa's lab.")
 
-consinsHouse = mapLocation("cousins' house", True)
-yourHouse = mapLocation('your house', True)
-mysteriousPath = mapLocation('mysterious path', True)
-paletTown = [profsLab, consinsHouse, yourHouse, mysteriousPath]
+
+def yourHouse():
+    player1.area = house
+    player1.location = livingRoom
+
+
+def mysteriousPath():
+    for i in range(len(mysteriousPathDialog)):
+        print('TALL GRASS SUROUNDS YOU\n')
+        print('PROFFESSOR OAK:', mysteriousPathDialog[i])
+        input()
+        os.system('cls')
+    print('now we attack')
+
+
+house = {
+    'living room': livingRoom,
+    'bedroom': bedroom
+}
+
+paletTown = {
+    'oak pokemon research lab': profsLab,
+    "cousins' house": cosinsHouse,
+    'your house': yourHouse,
+    'mysterious path': mysteriousPath
+}
 
 
 class pokemon:
@@ -70,7 +128,12 @@ class pokemon:
         print('HEALTH:', self.health)
 
 
+player1 = player()
+
+
 '''
+
+
 class item:
     # define attributes for the item class
     def __init__(self, name, location, inBackpack):
