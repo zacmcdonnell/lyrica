@@ -38,7 +38,8 @@ class Game:
         while True:
             if self.movePlayer():
                 os.system('cls')
-                print("You have arrived at the", player1.location)
+                print("You have arrived at the", str(
+                    player1.location).capitalize())
                 input('.....')
                 os.system('cls')
                 player1.area.get(player1.location)()
@@ -51,7 +52,7 @@ class Game:
         print('Go To:')
         for i in player1.area:
             if i != player1.location:
-                print(' -', i)
+                print(' -', i.capitalize())
         userInput = input("> ").lower()
         for i in player1.area:
             if userInput == i:

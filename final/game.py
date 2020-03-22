@@ -39,28 +39,34 @@ class player:
 
 # create the class, game map
 class gameMap:
-
     # define the create objects function
     def createObjects(self):
-        global objects
-        # create a list and add all the game objects to the list
-        objects = []
-        # append the objects to the list
-        objects.append(item('flute', 6, False))
-        # create objects based off the item class and specify atributes such as location and inBackpack
-        objects.append(item('stone', 5, False))
+        global items, NPCs
 
-        objects.append(NPC('The baker', 6))
-        objects.append(NPC('fox', random.randint(0, 14)))
-        objects.append(NPC('dolphine', 13))
+        items = {
+            'flute': item(6, False),
+            'stone': item(5, False)
+        }
+        NPCs = {
+            'The baker': NPC(6),
+            'fox': NPC(random.randint(0, 14)),
+            'dolphine': NPC(13)
+
+        }
+        self.describeMap()
 
     # desribe all the objects in the map
+
     def describeMap(self):
         # loop through all the items in the objects list and print their name and location
-        for i in objects:
-            print("name = ", i.name, "location = ", i.location)
+        for i in items:
+            print(i, "location = ", items.get(i).location)
+        for i in NPCs:
+            print(i, "location = ", NPCs.get(i).location)
+        print("player location = ", player1.location)
 
     # define the describeLocation method
+
     def describeLocation(self):
         # display where the player is
         print('------------------------------------------------------')
@@ -70,23 +76,25 @@ class gameMap:
         print('You have', player1.health, 'health.')
         print('You have', player1.stamina, 'staminer left.')
         # loop through all the objects
-        for i in objects:
-            # check what the what atribute of the object is
-            if i.what == 'item':
-                # find all the items in the object list and call the isItem() methon
-                i.isItem()
-                # if there is an NPC in the object list call the hello() method
-            if i.what == 'NPC':
-                i.hello()
+        for i in items:
+            if items.get(i).location == player1.location:
+                print("You see a", i, "here.")
+
+        for i in NPCs:
+            if player1.location == NPCs.get(i).location:
+                # get current NPC and ask the user if they would like to talk to them
+                hello = input('Would you like to talk to ' + i + '? ')
+                NPCs.get(i).talk(i) if hello.startswith(
+                    'y') else print('ill see you later on')
 
     # move all objects and players to a random location
     def shuffle(self):
         print('WOOOOHAAAAA TSUNAMI INCOMING')
         print("you get swept away along with everything else!!")
         # loop through all objects
-        for i in objects:
-            # change thier location property to a random number between 0 and 15
-            i.location = random.randint(0, 15)
+        for i in items:
+            for i in NPCs:  # change thier location property to a random number between 0 and 15
+                i.location = random.randint(0, 15)
 
         # change the players location
         player1.location = random.randint(0, 15)
@@ -97,29 +105,20 @@ class gameMap:
 # define the class, item
 class item:
     # define attributes for the item class
-    def __init__(self, name, location, inBackpack):
+    def __init__(self, location, inBackpack):
         # attach to self construct for later use in the methods of the class
-        self.what = 'item'
-        self.name = name
         self.location = location
         self.inBackpack = inBackpack
-        self.keywords()
-
-# define isItem Method
-    def isItem(self):
-        # if the player is at the same location
-        if self.location == player1.location:
-            print("You see a", self.name, "here.")
 
     # define get method
-    def getItem(self, verb):
+    def getItem(self, verb, name):
         if verb in dropCommands:
             # if the item is in the backpack set it to false and display to user
             if self.inBackpack:
                 self.inBackpack = False
                 # change location to where the player dropped it
                 self.location = player1.location
-                print("The", self.name, "has been dropped")
+                print("The", name, "has been dropped")
             else:
                 print("You can't drop something you don't have!")
 
@@ -129,37 +128,22 @@ class item:
                 # put the item in the backpack
                 self.inBackpack = True
                 # display to user
-                print("The", self.name, "has been added to your inventory")
+                print("The", name, "has been added to your inventory")
             else:
                 print("You can't take something thats not there")
-
-    def keywords(self):
-        # when an item object is created the function attaches the name to a list for later use
-        return itemKeywords.append(self.name)
 
 
 # create the NPC class
 class NPC:
     # define attributes for the NPC class
-    def __init__(self, name, location):
+    def __init__(self, location):
         # attach to self construct for later use in the methods of the class
-        self.what = 'NPC'
-        self.name = name
         self.location = location
-
-    # define hello method - this deals with NPC interation
-    def hello(self):
-        # check if player is at the same location as NPC
-        if player1.location == self.location:
-            # get current NPC and ask the user if they would like to talk to them
-            hello = input('Would you like to talk to ' + self.name + '? ')
-            self.talk(self.name) if hello.startswith(
-                'y') else print('ill see you later on')
 
     # define talk function - this handles NPC interaction
     def talk(self, name):
         # check which NPC to interact with
-        if self.name == "The baker":
+        if name == "The baker":
             print('Hey dude, Im the baker - wanna free snack?')
             # ask the player if they want a free snack
             ask = input("Yes or No: ").lower()
@@ -172,14 +156,15 @@ class NPC:
                 print('your welcome dude come again!!')
             else:
                 print('your loss.....')
-        elif self.name == 'fox':
+        elif name == 'fox':
             # choose a random weather forecast from the weatherOptions list
             weather = random.choice(weatherOptions)
             # call the shuffle() method if the weather forecast equals tsunami else print the weather
             gameMap().shuffle() if weather == 'tsunami' else print(
                 "hey man the weather forcast is", weather)
         else:
-            print("whoops couldn't be bothered impelenting that NPC what a drag amiright")
+            print(
+                "whoops couldn't be bothered impelenting that NPC what a drag amiright")
 
 # define the Game class
 
@@ -217,20 +202,20 @@ class Game:
         # ask for user input and split the response into indiviuals strings and store in array
         userInput = input("Enter your next action: ").lower().split()
         os.system('cls')
-        #print('UserInput =', userInput)
+        # print('UserInput =', userInput)
 
         # loop through the userInput array
         for i in userInput:
-            #print('current word:', i)
+            # print('current word:', i)
             # check if the item is a verb or noun
-            if self.goWhere(i) or i in itemKeywords:
+            if self.goWhere(i) or i in items.keys():
                 # only use the first noun and verb else extra nouns or verbs are ignored
                 noun = i if noun == None else print('extra nouns are ignored')
-                #print('noun = ', noun)
+                # print('noun = ', noun)
 
             elif i in verbs:
                 verb = i if verb == None else print('extra verbs are ignored')
-                #print('verb = ', verb)
+                # print('verb = ', verb)
             elif i in joiningWords:
                 None
             else:
@@ -259,25 +244,23 @@ class Game:
                 if verb in moveCommands and self.goWhere(noun):
                     player1.movePlayer()
                 # check if the user wanted to drop or take an item
-                for i in objects:
-                    if i.name == noun:
-                        i.getItem(verb)
+                for i in items:
+                    if i == noun:
+                        items.get(i).getItem(verb, i)
 
     def goWhere(self, direction):
         global restriction, amountMoved
         # set a count
-        count = 0
         # loop through the moveKeywords dictionary keys
-        for i in moveKeywords:
+        for i in movements.values():
             # check if the direction is in the current key's value
-            if direction in moveKeywords.get(i):
+            if direction in i.keywords:
                 # assign restriction to the corresponding list element based off the looping order
-                restriction = restrictionList[count]
+                restriction = i.restrictions
                 # assign amountMoved to the corresponding list element based off the looping order
-                amountMoved = amountMovedList[count]
+                amountMoved = i.amountMoved
                 return True
             # add one to the count
-            count += 1
 
 
 # program entry point
