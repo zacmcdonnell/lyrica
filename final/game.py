@@ -4,10 +4,9 @@ import os
 
 import staticData as data
 from player import player
-from items import item
-from npcs import NPC
+from objects import GameObjects
+from objects import item
 from movement import movement
-from gameMap import gameMap
 
 
 # define the Game class
@@ -30,9 +29,11 @@ class Game:
         print('    Control your charater by using sentances such as "go north"\n')
         # create the player object
         # create the game objects and describe the location
-        gameMap.describeLocation()
-
+        player.describeLocation()
+        GameObjects.describeObjects()
     # handle the user input
+
+        # loop through all the objects
 
     def handleInput(self):
         global verb, noun
@@ -48,7 +49,7 @@ class Game:
         for i in userInput:
             # print('current word:', i)
             # check if the item is a verb or noun
-            if movement.goWhere(i, False) or i in gameMap.items.keys():
+            if movement.goWhere(player, i, False) or i in GameObjects.items.keys():
                 # only use the first noun and verb else extra nouns or verbs are ignored
                 noun = i if noun == None else print('extra nouns are ignored')
                 # print('noun = ', noun)
@@ -81,16 +82,13 @@ class Game:
             # check what the verbs and nouns were and call appropraite functions
             elif self.handleInput():
                 # check if the user wanted to move
-                if verb in data.moveCommands and movement.goWhere(noun, False):
-                    restriction, amountMoved = movement.goWhere(noun, True)
-                    if movement.movePlayer(player, restriction, amountMoved):
-                        gameMap.describeLocation()
-                    else:
-                        # print a random blocked message if player location in restrictions
-                        print(data.blockedMessages[random.randint(0, 8)])
+                if verb in data.moveCommands and movement.goWhere(player, noun, True):
+                    # check if the user wanted to drop or take an item
+                    player.setStamina()
+                    player.describeLocation()
+                    GameObjects.describeObjects()
 
-                # check if the user wanted to drop or take an item
-                for k, v in gameMap.items.items():
+                for k, v in GameObjects.items.items():
                     if k == noun:
                         item.getItem(v, verb, k)
 

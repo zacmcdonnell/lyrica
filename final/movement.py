@@ -1,21 +1,14 @@
-class movement:
+from player import player
+
+
+class movement(player):
 
     def __init__(self, keywords, restrictions, amountMoved):
         self.keywords = keywords
         self.restrictions = restrictions
         self.amountMoved = amountMoved
 
-    @staticmethod
-    def movePlayer(player, restriction, amountMoved):
-        # if the player location is not in the restrictions
-        if player.location not in restriction:
-            # then move the player by the specified amount
-            player.location += amountMoved
-            # call the describle location method inside the gameMap class
-            return True
-
-    @staticmethod
-    def goWhere(direction, returnValues):
+    def goWhere(self, direction, returnValues):
         # set a count
         # loop through the moveKeywords dictionary keys
         for i in movements.values():
@@ -23,7 +16,8 @@ class movement:
             if direction in i.keywords:
                 # return restriction and amount based off current dictonary item looping order
                 if returnValues == True:
-                    return i.restrictions, i.amountMoved
+                    self.movePlayer(i.restrictions, i.amountMoved)
+                    return True
                 else:
                     return True
                 # add one to the count
